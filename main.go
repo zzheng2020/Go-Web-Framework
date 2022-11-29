@@ -12,14 +12,17 @@ func main() {
 		ctx.HTML(http.StatusOK, "<h1>Hello Ett</h1>")
 	})
 
-	r.GET("/hello", func(c *ett.Context) {
-		c.String(http.StatusOK, "hello %s, you're at %s\n", c.Query("name"), c.Path)
+	r.GET("/hello", func(ctx *ett.Context) {
+		ctx.String(http.StatusOK, "hello %s, you're at %s\n", ctx.Query("name"), ctx.Path)
 	})
 
-	r.POST("/login", func(ctx *ett.Context) {
-		ctx.JSON(http.StatusOK, ett.H{
-			"username": ctx.PostForm("username"),
-			"password": ctx.PostForm("password"),
+	r.GET("/hello/:name", func(ctx *ett.Context) {
+		ctx.String(http.StatusOK, "hello %s, you're at %s\n", ctx.Param("name"), ctx.Path)
+	})
+
+	r.GET("/assets/*filepath", func(c *ett.Context) {
+		c.JSON(http.StatusOK, ett.H{
+			"filepath": c.Param("filepath"),
 		})
 	})
 
