@@ -3,6 +3,7 @@ package ett
 import (
 	"log"
 	"net/http"
+	"strings"
 )
 
 // define handler to handle request
@@ -21,6 +22,10 @@ type (
 		groups []*RouterGroup
 	}
 )
+
+func (group *RouterGroup) Use(middlewares ...HandlerFunc) {
+	group.middleweares = append(group.middleweares, middlewares...)
+}
 
 func New() *Engine {
 	engine := &Engine{
@@ -55,7 +60,14 @@ func (group *RouterGroup) addRoute(method string, comp string, handler HandlerFu
 
 // handle received requests
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	var middleware []HandlerFunc
+	for _, group := range engine.groups {
+		if strings.HasPrefix(req.URL.Path, group.prefix) {
+			middleware = append(middleware, group.middleweares...)
+		}
+	}
 	c := newContext(w, req)
+	c.handlers = middleware
 	engine.router.handle(c)
 }
 
