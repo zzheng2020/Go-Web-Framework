@@ -20,9 +20,15 @@ func onlyForV2() ett.HandlerFunc {
 
 func main() {
 	r := ett.New()
-	r.Use(ett.Logger()) // global midlleware
+	r.Use(ett.Logger(), ett.Recovery()) // global midlleware
+
 	r.GET("/", func(c *ett.Context) {
 		c.HTML(http.StatusOK, "<h1>Hello ett</h1>")
+	})
+
+	r.GET("/panic", func(ctx *ett.Context) {
+		names := []string{"test panic"}
+		ctx.String(http.StatusOK, names[10000]) // raise panic
 	})
 
 	v2 := r.Group("/v2")
