@@ -2,6 +2,8 @@ package main
 
 import (
 	"ett"
+	"ettcache/lru"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -25,6 +27,9 @@ func main() {
 	r.GET("/", func(c *ett.Context) {
 		c.HTML(http.StatusOK, "<h1>Hello ett</h1>")
 	})
+
+	test := lru.New(int64(0), nil)
+	fmt.Println(test)
 
 	r.GET("/panic", func(ctx *ett.Context) {
 		names := []string{"test panic"}
