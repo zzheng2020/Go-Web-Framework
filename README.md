@@ -5,6 +5,6 @@ ETT means "one" in Swedish, and this is the "first" web framework I learned to i
 * `Context`: encapsulate Request and Respons.
 * `Trie Tree`: achieve dynamic routing.
 * `Route Group Control`: achieve group control.
-* `Milldeware`: support middleware.
+* `Middleware`: support middleware.
 
 To be continued...
